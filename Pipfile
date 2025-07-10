@@ -7,7 +7,6 @@ name = "pypi"
 flask = "*"
 jinja2 = "*"
 flask-sqlalchemy = "*"
-psycopg2-binary = "*"
 python-dotenv = "*"
 authlib = "*"
 requests = "*"
@@ -16,6 +15,7 @@ flask-migrate = "*"
 weasyprint = "*"
 pdfkit = "*"
 flask-wtf = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
