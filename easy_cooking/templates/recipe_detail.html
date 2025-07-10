@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ recipe.name }} - Recipe {% endblock %}
+{%block content %}
+<div class="content-wrapper">
+    {% if is_in_cart %}
+        <form action="{{ url_for('remove_from_cart', recipe_id=recipe.rid) }}" method="POST">
+            <button type="submit" class="pure-button pure-button-error">Remove from Cart</button>
+        </form>
+    {% else %}
+        <form action="{{ url_for('add_to_cart', recipe_id=recipe.rid) }}" method="POST">
+            <button type="submit" class="pure-button pure-button-primary">Add to Cart</button>
+        </form>
+    {% endif %}
+
+    <h1>{{ recipe.name }}</h1>
+    <div style="font-family: monaco, monospace;">
+        <div class="pure-g pure-u-1 pure-u-md-1-3">
+            <div class="pure-u-2-5 pure-u-md-1-3">
+                <h2>Author:</h2>
+                <p>{{ recipe.uid }}</p>
+                <h2>Create Time:</h2>
+                <p>{{ recipe.time.strftime('%Y-%m-%d') }}</p>
+                <h2>Description:</h2>
+                <p>{{ recipe.description }}</p>
+                <h2>Category:</h2>
+                <p>{{recipe.category}}</p>
+                <h2>Difficulty:</h2>
+                <p>{{ recipe.difficulty }}</p>
+                <h2>Spiciness:</h2>
+                <p>{{ recipe.spiciness }}</p>
+
+                <h2>Others:</h2>
+                {% if recipe.nut_free %}
+                    <p>Nut-Free</p>
+                {% endif %}
+                {% if recipe.vegan %}
+                    <p>Vegetarian</p>
+                {% endif %}
+                {% if recipe.dairy_free %}
+                    <p>Dairy-Free</p>
+                {% endif %}
+            </div>
+
+            <div class="pure-u-1-5 pure-u-md-1-3"></div>
+
+            <div>
+                <img style="float: right;" width="570" height="400" src="{{ recipe.image }}" />
+            </div>
+            
+        </div>
+
+        <div class="pure-g pure-u-1 pure-u-md-1-3">
+            <div class="pure-u-3-5 pure-u-md-1-3">
+                <h2>Ingredients:</h2>
+                <ul>
+                    {% for ingredient, quantity, measurement in zip(recipe.ingredients, recipe.quantity, recipe.measurement) %}
+                    <li>{{ ingredient }} - {{quantity}} {{measurement}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="pure-u-2-5 pure-u-md-1-3">
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
+                    {% if recipe.video_link %}
+                        {% set video_id = recipe.video_link.split('v=')[-1] %}
+                        <iframe src="https://www.youtube.com/embed/{{ video_id }}" 
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <h2>Instructions:</h2>
+        <ul id="instruction-list">
+            {% for instruction in recipe.instructions %}
+            <li class="instruction-item" style="display: none;"><b>Step {{ loop.index }}:</b> {{ instruction }}</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Button to show the previous and next instruction -->
+        <div class="button-container">
+            <button type="button" id="prev-btn" class="pure-button pure-button-primary" style="display: none;">Previous Instruction</button>
+            <button type="button" id="next-btn" class="pure-button pure-button-primary">Next Instruction</button>
+        </div>
+
+        
+        <div>
+            <h1><u>Nutritional Information </u></h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nutrient</th>
+                        <th>Quantity</b></th>
+                        <th>Unit</th>
+                        <th>Daily Value (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for nutrient, details in nutrition.items() %}
+                        {% if details is mapping %}
+                            <tr>
+                                <td>{{ nutrient | capitalize }}</td>
+                                <td>{{ details['quantity'] | round(2) }}</td>
+                                <td>{{ details['unit'] }}</td>
+                                <td>
+                                    {% if details['percentage'] is not none %}
+                                        {{ details['percentage'] | int }}
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <!-- For boolean values like nut_free, dairy_free, Vegetarian, etc. -->
+                            <tr>
+                                <td>{{ nutrient | capitalize }}</td>
+                                <td colspan="3">{{ details }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all the instructions and the buttons
+        const instructions = document.querySelectorAll('.instruction-item');
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        
+        let currentStep = 0; // Track the current instruction
+
+        // Show the first step initially
+        if (instructions.length > 0) {
+            instructions[currentStep].style.display = 'block';
+        }
+
+        // Update button visibility based on the current step
+        function updateButtonVisibility() {
+            if (currentStep === 0) {
+                // If on the first step, hide "Previous" and show "Next"
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'inline';
+            } else if (currentStep === instructions.length - 1) {
+                // If on the last step, hide "Next" and show "Previous"
+                nextBtn.style.display = 'none';
+                prevBtn.style.display = 'inline';
+            } else {
+                // If in between steps, show both buttons
+                prevBtn.style.display = 'inline';
+                nextBtn.style.display = 'inline';
+            }
+        }
+
+        // Show the first step with only the "Next" button visible
+        updateButtonVisibility();
+
+        // Event listener for the "Next" button
+        nextBtn.addEventListener('click', function() {
+            if (currentStep < instructions.length - 1) {
+                // Hide the current instruction
+                instructions[currentStep].style.display = 'none';
+
+                // Increment to the next step
+                currentStep++;
+
+                // Show the next instruction
+                instructions[currentStep].style.display = 'block';
+
+                // Update button visibility
+                updateButtonVisibility();
+            }
+        });
+
+        // Event listener for the "Previous" button
+        prevBtn.addEventListener('click', function() {
+            if (currentStep > 0) {
+                // Hide the current instruction
+                instructions[currentStep].style.display = 'none';
+
+                // Decrement to the previous step
+                currentStep--;
+
+                // Show the previous instruction
+                instructions[currentStep].style.display = 'block';
+
+                // Update button visibility
+                updateButtonVisibility();
+            }
+        });
+    });
+</script>
+
+{%endblock%}

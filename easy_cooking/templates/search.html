@@ -1,0 +1,156 @@
+<div class = "search_page">
+{% extends 'base.html' %}
+
+{% block title %}Search - Easy Cooking{% endblock %}
+
+{% block content %}
+    <div class="pure-g">
+        <h1>Search</h1>
+        <div class="pure-u-1 search-content">
+            <form method="GET" action="{{ url_for('search') }}" class="pure-form">
+                <input type="text" name="q" placeholder="Type any keywords..." class="pure-input-rounded search-bar">
+                <button type="submit" class="pure-button pure-button-primary search-button">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="checkbox-filters" class="search-filter" style="display: none;">
+        <label for="nut" class="pure-checkbox">
+            <div class="filter-box">
+                <h3>Filters</h3>
+            <input type="checkbox" id="nut" name="nut"> Nut Free
+        </label> <br>
+
+        <label for="soy" class="pure-checkbox">
+            <input type="checkbox" id="dairy" name="dairy"> Dairy Free
+        </label> <br>
+
+        <label for="vegetarian" class="pure-checkbox">
+            <input type="checkbox" id="vegetarian" name="vegetarian"> Vegetarian
+        </label> <br>
+    </div>
+    </div>
+    
+    <div class="pure-u-1">
+        <h1>Recommend Search by Keywords</h1>
+        <div class="pure-u-1-5 recipe-card">
+            Chinese
+        </div>
+        <div class="pure-u-1-5 recipe-card">
+            Sushi
+        </div>
+        <div class="pure-u-1-5 recipe-card">
+            Vegetarian
+        </div>
+        <div class="pure-u-1-5 recipe-card">
+            Easy
+        </div>
+    </div>
+   
+
+    <div class="search-results">
+        {% if recipes is not none %}
+            {% if recipes %}
+                <h2>Search Results</h2>
+                <ul>
+                    {% for recipe in recipes %}
+                        <li class="recipe-card-search-page"
+                            data-nutfree="{{ recipe.nut_free }}"
+                            data-vegetarian="{{ recipe.vegan }}"
+                            data-dairyfree="{{ recipe.dairy_free }}"
+                            id="recipe_card_{{ loop.index }}">>
+                            <a href="{{ url_for('recipe_detail', recipe_name=recipe.name) }}">
+                                {{ recipe.name }} - {{ recipe.category }} (Difficulty: {{ recipe.difficulty }}, Spiciness: {{ recipe.spiciness }})
+                            </a>
+                            <p>{{ recipe.description }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No matching recipes found.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxNut = document.getElementById('nut');
+        const checkboxVeg = document.getElementById('vegetarian');
+        const checkboxDairy = document.getElementById('dairy');
+        
+        const recipeCards = document.querySelectorAll('.recipe-card-search-page'); // Select all recipe cards
+
+        // Combined filtering function
+        function filterRecipes() {
+            const isNutFreeChecked = checkboxNut.checked;
+            const isVegetarianChecked = checkboxVeg.checked;
+            const isDairyFreeChecked = checkboxDairy.checked;
+
+
+            recipeCards.forEach(function(recipeCard) {
+                // Retrieve the attributes of the recipe card
+                const isNutFree = recipeCard.getAttribute('data-nutfree') === 'True';
+                const isVegetarian = recipeCard.getAttribute('data-vegetarian') === 'True';
+                const isDairyFree = recipeCard.getAttribute('data-dairyfree') === 'True';
+          
+                // Check if the recipe matches all active filters
+                let showRecipe = true;
+
+                // Apply Nut-Free filter
+                if (isNutFreeChecked && !isNutFree) {
+                    showRecipe = false;
+                }
+
+                // Apply Vegetarian filter
+                if (isVegetarianChecked && !isVegetarian) {
+                    showRecipe = false;
+                }
+
+                // Apply Dairy-Free filter
+                if (isDairyFreeChecked && !isDairyFree) {
+                    showRecipe = false;
+                }
+
+                // Show or hide the recipe card based on the filters
+                recipeCard.style.display = showRecipe ? 'block' : 'none';
+            });
+        }
+
+        checkboxNut.addEventListener('change', filterRecipes);
+        checkboxVeg.addEventListener('change', filterRecipes);
+        checkboxDairy.addEventListener('change', filterRecipes);
+
+        filterRecipes();
+
+        // searchButton.addEventListener('click', function() {
+        
+        //     checkboxNut.checked = false;
+        //     checkboxVeg.checked = false;
+        //     checkboxDairy.checked = false;
+
+        //     filterRecipes();
+        // });
+        
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchBar = document.getElementById('search-bar');
+        const checkboxFilters = document.getElementById('checkbox-filters');
+        const searchForm = document.querySelector('form'); // Select the form element
+        // Check if there is a search query and show filters
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q');
+        if (query) {
+            checkboxFilters.style.display = 'block'; // Show checkboxes if there is a search query
+        }
+        searchForm.addEventListener('submit', function(event) {
+            if (searchBar.value.trim().length > 0) {
+                checkboxFilters.style.display = 'block'; // Show checkboxes when a search is submitted
+            }
+        });
+    });
+</script>
+
+{% endblock %}

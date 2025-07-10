@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}CheckList - Easy Cooking{% endblock %}
+
+{% block content %}
+    <div class="pure-g cart-list">
+        <h2>My CheckList</h2>
+        <div class="pure-u-1 cart-items">
+            {% if cart_items %}
+                <ul>
+                    {% set current_recipe = None %}
+                    {% for item in cart_items %}
+                        {% if current_recipe != item.recipe.name %}
+                            <li class="cart-item">
+                                <h3>{{ item.recipe.name }}:</h3>
+                                <form method="post" action="{{ url_for('add_to_cart', recipe_id=item.recipe.rid) }}">
+                                    <h4>Unchecked ingredients:</h4>
+                                    <div>
+                                        {% for i in range( item.ingredient | length ) %}
+                                                {% if item.checking[i] == False %}
+                                                <!-- <label> -->
+                                                    <input type="checkbox" name="selected_ingredients" value="{{ item.ingredient[i] }}">
+                                                    {{ item.ingredient[i] }}
+                                                <!-- </label> -->
+                                                <br>
+                                                {% endif %}
+                                        {% endfor %}
+                                    </div>
+
+                                    <h4>Checked ingredients:</h4>
+                                    <div>
+                                        {% for i in range( item.ingredient | length ) %}
+                                            {% if item.checking[i] == True %}
+                                                <!-- <label> -->
+                                                    <input type="checkbox" name="selected_ingredients" value="{{ item.ingredient[i] }}" checked>
+                                                    {{ item.ingredient[i] }}
+                                                <!-- </label> -->
+                                                <br>
+                                                {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <!-- 提交每个成分，并显示复选框 -->
+                                    <!-- <div>
+                                        {% for ingredient in item.recipe.ingredients %}
+                                            <label> -->
+                                                <!-- 去掉成分的前后空格，以避免匹配问题 -->
+                                                <!-- <input type="hidden" name="ingredients" value="{{ ingredient.strip() }}"> -->
+                                                
+                                                <!-- 复选框根据是否已勾选设置 checked 属性 -->
+                                                <!-- <input type="checkbox" name="selected_ingredients" value="{{ ingredient.strip() }}" 
+                                                {% if ingredient.strip() in item.ingredient %} checked {% endif %}> 
+                                                {{ ingredient.strip() }}
+                                            </label><br>
+                                        {% endfor %}
+                                    </div> -->
+
+                                    <button type="submit" class="pure-button pure-button-primary">Update the CheckList</button>
+                                </form>
+
+                                <!-- Form to delete the recipe -->
+                                <form method="post" action="{{ url_for('remove_from_cart', recipe_id=item.recipe.rid) }}" style="display:inline;">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="pure-button pure-button-error">Delete Recipe</button>
+                                </form>
+                            </li>
+                        {% endif %}
+                        {% set current_recipe = item.recipe.name %}
+                    {% endfor %}
+                </ul>
+                <div class="checkout">
+                    <a id="gpdf" class="pure-button pure-button-primary">Create A PDF File</a>
+                    
+                </div>
+            {% else %}
+                <p>Your CheckList is empty.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+

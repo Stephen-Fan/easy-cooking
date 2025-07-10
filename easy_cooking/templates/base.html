@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+
+    <title>{% block title %}Easy Cooking{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <div class="logo" >
+            <img id="home_icon" src="{{ url_for('static', filename='images/icon.png') }}" alt="Website Logo" onclick="directToHome()">
+        </div>
+        <div class="pure-menu pure-menu-horizontal navgation">
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item">
+                    <a href="{{ url_for('cart') }}" class="pure-menu-link {% if active_page == 'cart' %}active{% endif %}">CheckList</a>
+
+                </li>
+                <li class="pure-menu-item">
+                    <a href="{{ url_for('home') }}" class="pure-menu-link {% if active_page == 'home' %}active{% endif %}">Home</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="{{ url_for('recipes') }}" class="pure-menu-link {% if active_page == 'recipes' %}active{% endif %}">Recipe</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="{{ url_for('search') }}" class="pure-menu-link {% if active_page == 'search' %}active{% endif %}">Search</a>
+                </li>
+                
+                {% if session and session.get('userinfo') %}
+                    <li class="pure-menu-item"><a href="{{ url_for('portal') }}" class="pure-menu-link {% if active_page == 'portal' %}active{% endif %}">Portal</a></li>
+                    <li class="welcome pure-menu-item">Welcome, {{session.userinfo.name}}!</li>
+                    <li class="pure-menu-item"><a href="/logout" class="pure-menu-link">Logout</a></li>
+                    <!-- {#<div><pre>{{pretty}}</pre></div>#} -->
+                {% else %}
+                    <li class="pure-menu-item"><a href="/login" class="pure-menu-link">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
+        
+        <!-- <div class="logo">
+            <img id="shopping_cart" src="{{ url_for('static', filename='/images/shopping_cart.jpg') }}" alt="Login Logo" >
+        </div>
+        <div class="logo">
+            <img id="log_in" src="{{ url_for('static', filename='/images/login_icon.png') }}" alt="Login Logo" onclick="directToLoginPage()">
+        </div> -->
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Easy Cooking</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+</body>
+</html>

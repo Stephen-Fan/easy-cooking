@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}Recipes - Easy Cooking{% endblock %}
+
+{% block content %}
+    <div class="pure-g">
+        <!-- Sidebar with foldable list -->
+        <aside class="sidebar">
+            <ul class="foldable-list">
+                <li>
+                    <button class="fold-button pure-button pure-button-primary">Eastern Style</button>
+                    <ul class="sub-list">
+                        <li><a href="{{ url_for('recipes_by_category', category='Chinese') }}">Chinese</a></li>
+                        <li><a href="{{ url_for('recipes_by_category', category='Japanese') }}">Japanese</a></li>
+                        <li><a href="{{ url_for('recipes_by_category', category='Korean') }}">Korean</a></li>
+                        <li><a href="{{ url_for('recipes_by_category', category='Vietnamese') }}">Vietnamese</a></li>
+                        <li><a href="{{ url_for('recipes_by_category', category='Thai') }}">Thai</a></li>
+
+                    </ul>
+                </li>
+                <li>
+                    <button class="fold-button pure-button pure-button-primary">Western Style</button>
+                    <ul class="sub-list">
+                        <li><a href="{{ url_for('recipes_by_category', category='American') }}">American</a></li>
+                        <li><a href="{{ url_for('recipes_by_category', category='Mexican') }}">Mexican</a></li>
+                        <li><a href="{{ url_for('recipes_by_category', category='Italian') }}">Italian</a></li>
+                        <li><a href="{{ url_for('recipes_by_category', category='England') }}">England</a></li>
+                        <li><a href="{{ url_for('recipes_by_category', category='Spanish') }}">Spanish</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main recipe content -->
+        <div class="main-content">
+            <div class="filters-block pure-form">
+                <h3>Filters</h3>
+                <div class="filter-items">
+                    
+                    <label for="nut" class="pure-checkbox">
+                        <input type="checkbox" id="nut" name="nut"> Nut Free
+                    </label>
+
+                    <label for="soy" class="pure-checkbox">
+                        <input type="checkbox" id="dairy" name="dairy"> Dairy Free
+                    </label>
+
+                    <label for="vegetarian" class="pure-checkbox">
+                        <input type="checkbox" id="vegetarian" name="vegetarian"> Vegetarian
+                    </label>
+                </div>
+
+                <div class="filter-items">
+                    <select name="Spicy" id="Spicy">
+                        <option value="">Speciness - Level </option>
+                        <option value="No Spicy">No Spicy - 0</option>
+                        <option value="Mild">Mild - 1</option>
+                        <option value="Medium">Medium - 2</option>
+                        <option value="Hot">Hot - 3</option>
+                        <option value="Extra_Hot">Extra Hot - 4</option>
+                        <option value="Extrme_Hot">Extreme Hot - 5</option>
+                    </select>
+
+                    <select name="Difficulty" id="Difficulty">
+                        <option value="">Difficulty</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end;">
+                    <button id="clearFilters" type="button" class="pure-button pure-button-primary">Clear All Filters</button>
+                </div>
+            </div>
+
+            <!-- Recipe List -->
+            {% if category %}
+                <h2>Recipes for {{ category }} Style</h2>
+                <div class="recipe-list pure-g">
+                    {% for recipe in recipes %}
+                    <div class="pure-u-1-5 pure-u-md-1-3 recipe-card" 
+                            data-spicy="{{ recipe.spiciness }}"
+                            data-difficulty="{{ recipe.difficulty }}"
+                            data-nutfree="{{ recipe.nut_free }}"
+                            data-vegetarian="{{ recipe.vegan }}"
+                            data-dairyfree="{{ recipe.dairy_free }}"
+                            id="recipe_card_{{ loop.index }}"
+                            id="recipe_card_id">
+                        <div class="image-container">
+                            <img src="{{ recipe.image }}" alt="{{ recipe.name }}" class="recipe-image">
+                        </div>
+                        <h2><a href="{{ url_for('recipe_detail', recipe_name=recipe.name) }}">{{ recipe.name }}</a></h2>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h2>All Recipes</h2>
+                <div class="recipe-list pure-g">
+                    {% for recipe in recipes %}
+                    <div class="pure-u-1-5 pure-u-md-1-3 recipe-card" 
+                            data-spicy="{{ recipe.spiciness }}"
+                            data-difficulty="{{ recipe.difficulty }}"
+                            data-nutfree="{{ recipe.nut_free }}"
+                            data-vegetarian="{{ recipe.vegan }}"
+                            data-dairyfree="{{ recipe.dairy_free }}"
+                            id="recipe_card_{{ loop.index }}">
+                        <div class="image-container">
+                            <img src="{{ recipe.image }}" alt="{{ recipe.name }}" class="recipe-image">
+                        </div>
+                        <h2><a href="{{ url_for('recipe_detail', recipe_name=recipe.name) }}">{{ recipe.name }}</a></h2>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxNut = document.getElementById('nut');
+            const checkboxVeg = document.getElementById('vegetarian');
+            const checkboxDairy = document.getElementById('dairy');
+            const spicinessDropdown = document.getElementById('Spicy');
+            const difficultyDropdown = document.getElementById('Difficulty');
+            const recipeCards = document.querySelectorAll('.recipe-card'); // Select all recipe cards
+            const clearButton = document.getElementById('clearFilters');
+    
+            // Combined filtering function
+            function filterRecipes() {
+                const isNutFreeChecked = checkboxNut.checked;
+                const isVegetarianChecked = checkboxVeg.checked;
+                const isDairyFreeChecked = checkboxDairy.checked;
+                const selectedSpiciness = spicinessDropdown.value;
+                const selectedDifficulty = difficultyDropdown.value;
+    
+                recipeCards.forEach(function(recipeCard) {
+                    // Retrieve the attributes of the recipe card
+                    const isNutFree = recipeCard.getAttribute('data-nutfree') === 'True';
+                    const isVegetarian = recipeCard.getAttribute('data-vegetarian') === 'True';
+                    const isDairyFree = recipeCard.getAttribute('data-dairyfree') === 'True';
+                    const recipeSpiciness = recipeCard.getAttribute('data-spicy');
+                    const recipeDifficulty = recipeCard.getAttribute('data-difficulty');
+    
+                    // Check if the recipe matches all active filters
+                    let showRecipe = true;
+    
+                    // Apply Nut-Free filter
+                    if (isNutFreeChecked && !isNutFree) {
+                        showRecipe = false;
+                    }
+    
+                    // Apply Vegetarian filter
+                    if (isVegetarianChecked && !isVegetarian) {
+                        showRecipe = false;
+                    }
+    
+                    // Apply Dairy-Free filter
+                    if (isDairyFreeChecked && !isDairyFree) {
+                        showRecipe = false;
+                    }
+    
+                    // Apply Spiciness filter
+                    if (selectedSpiciness !== "" && recipeSpiciness !== selectedSpiciness) {
+                        showRecipe = false;
+                    }
+    
+                    // Apply Difficulty filter
+                    if (selectedDifficulty !== "" && recipeDifficulty !== selectedDifficulty) {
+                        showRecipe = false;
+                    }
+    
+                    // Show or hide the recipe card based on the filters
+                    recipeCard.style.display = showRecipe ? 'block' : 'none';
+                });
+            }
+    
+            checkboxNut.addEventListener('change', filterRecipes);
+            checkboxVeg.addEventListener('change', filterRecipes);
+            checkboxDairy.addEventListener('change', filterRecipes);
+            spicinessDropdown.addEventListener('change', filterRecipes);
+            difficultyDropdown.addEventListener('change', filterRecipes);
+    
+            filterRecipes();
+
+            clearButton.addEventListener('click', function() {
+
+                checkboxNut.checked = false;
+                checkboxVeg.checked = false;
+                checkboxDairy.checked = false;
+
+                spicinessDropdown.value = "";
+                difficultyDropdown.value = "";
+
+                filterRecipes();
+            });
+        });
+    </script>
+    
+{% endblock %}

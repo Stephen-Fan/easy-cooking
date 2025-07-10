@@ -1,0 +1,445 @@
+/* Ensure the body takes up the full height of the screen */
+html, body {
+    
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.logo:hover {
+    cursor: pointer;
+}
+/* Home Page  */
+.home-section {
+    background-image: url('/static/images/home_background_image.jpg');
+    background-size: cover; 
+    background-position: center; 
+    padding: 30px;
+    padding-bottom:160px
+   
+    
+}
+/* Search Page */
+.search_page {
+    background-image: url('/static/images/background_image.jpg');
+    background-size: cover; 
+    background-position: center; 
+    padding: 30px;
+}
+
+
+/* Set the main container (html, body) to flexbox layout */
+body {
+   
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header will be a fixed height */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #D27D2D;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 30px;
+}
+
+.logo {
+    margin-left: 10px;
+}
+
+.logo img {
+    width: 50px;
+    height: auto;
+    display: block;
+}
+
+.navgation {
+    
+    flex-grow: 1;
+    display: flex;
+    justify-content: end;
+}
+
+.navgation a {
+
+    margin: 0 15px;
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+}
+
+.welcome {
+    color: lightblue;
+}
+
+.navgation a.active {
+    font-weight: bold;
+    background-color: #f0b27a;
+    /* padding: 10px; */
+    border-radius: 5px;
+}
+
+/* Ensure the main content takes up the remaining space */
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes h1 to the top and slogan to the bottom */
+    padding: 20px;
+}
+
+/* Style for h1 in the top half */
+main h1 {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-grow: 1;
+    font-family: 'Dancing Script', cursive;
+    font-size: 48px;
+    margin-top: 50px;
+}
+
+/* Style for the slogan in the bottom half */
+main .slogan {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-grow: 1;
+    font-family: 'Great Vibes', cursive;
+    font-size: 24px;
+    margin-bottom: 250px;
+}
+
+footer {
+    background-color: #f4f4f4;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+}
+
+/* HERE IS CSS FOR RECIPES PAGE */
+
+/* Container for sidebar and main content */
+.pure-g {
+    display: flex;
+    /* justify-content: flex-start; */
+    /* justify-content: flex-start; /* Aligns the items from left to right */
+    /* align-items: flex-start; Aligns items at the top */ 
+
+    
+}
+
+
+/* Sidebar styling */
+.sidebar {
+    position:absolute;
+    width: 220px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    height: 80vh;
+
+}
+
+/* Shift the main content to the right of the fixed sidebar */
+.main-content {
+  
+    margin-left: 270px;
+    flex-grow: 1;
+    padding: 20px;
+}
+
+/* Foldable list styling */
+.foldable-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Button for folding/unfolding sub-lists */
+.fold-button {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+    text-align: center;
+    background-color: #f0b27a;
+    color: white;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    /* border-radius: 30px; */
+}
+
+/* Sub-list that will be folded/unfolded */
+.sub-list {
+    list-style: none;
+    padding-left: 75px;
+    display: none;
+}
+
+.sub-list li {
+    margin-bottom: 5px;
+}
+
+/* Filters block */
+.filters-block {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    margin-top: -20px;
+    /* border-radius: 30px; */
+}
+
+.filters-block h3 {
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+/* Display filters in one line */
+.filter-items {
+    display: flex;
+    gap: 20px;
+}
+
+/* Recipe list styling */
+.recipe-list {
+    margin-top: 20px;
+}
+
+.recipe-card {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.1);  
+    text-align: center;
+}
+
+.recipe-card-search-page {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.1);  
+    /* text-align: center; */
+}
+
+.recipe-card h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.recipe-image {
+    width: 100%;        /* Make the image take the full width of the container */
+    height: 90%;       /* Make the image take the full height of the container */
+    object-fit: cover;  /* Ensure the image covers the container while maintaining aspect ratio */
+    border-radius: 8px; /* Optional: Rounded corners */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional: Add a subtle shadow */
+}
+
+.image-container {
+    width: 100%;        /* Adjust width according to the container */
+    height: 200px;      /* Fixed height for the image container */
+    overflow: hidden;   /* Hide overflow if the image is larger */
+}
+
+.button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end; /* Aligns the "Next" button to the right */
+}
+
+#prev-btn {
+    margin-right: 10px; /* Adds spacing between the "Previous" and "Next" buttons */
+}
+
+
+/* HERE IS CSS FOR SEARCH PAGE */
+
+/* Center the entire search container */
+/* .search-container {
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+} */
+
+.search-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search-content h1 {
+    margin-bottom: 20px;
+    font-size: 36px;
+}
+
+.search-filter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Style the search bar */
+.search-bar {
+    padding: 10px;
+    width: 500px; 
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    /* margin-bottom: 20px;  */
+}
+
+/* Style the search button */
+.search-button {
+    padding: 10px 20px;
+    background-color: #41b3ed;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    color: white;
+}
+
+.search-button:hover {
+    background-color: #e69b65;
+}
+
+
+/*  User Portal Page*/
+.portal-list{
+    flex-direction: column;
+}
+
+/* Specific recipe */
+.recipe-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.recipe-link:hover {
+    background-color: #f0f0f0;
+}
+
+/* Flexbox layout for the login page container */
+.login-page-container {
+    display: flex;
+    height: 100vh; /* Full viewport height */
+}
+/* Image container on the side */
+.login-image img {
+    width: 80%; /* Adjust the image width (relative to its container) */
+    height: auto; /* Keep the aspect ratio */
+    object-fit: cover; /* Ensure proper scaling */
+}
+.login-image {
+    flex: 0 1 50%; /* Limit the image width to 40% of the container */
+    display: flex;
+    justify-content: center; /* Center the image horizontally */
+    align-items: center; /* Center the image vertically */
+}
+
+.login-content {
+    flex: 2; /* Take up equal space as the image */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    padding: 40px;
+}
+
+/* Add New Recipe Page*/
+.ingredient-container
+.quantity-container 
+.measurement-container {
+    margin-bottom: 10px;
+}
+
+.delete-btn {
+    background-color:red;
+}
+
+.delete-recipe {
+    background-color:red;
+    margin-top: 50px;
+}
+
+.upload {
+    margin-top: 10px;
+    float: right;
+}
+
+/* .input-group-label {
+    display: flex;
+    gap: 130px;
+} */
+
+.input-group-item {
+    display: flex;
+    gap: 5px;
+}
+
+.breaker {
+    margin-bottom: 10px;
+}
+
+.breaker2 {
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Ensures borders between cells */
+    border: 1px solid black; /* Adds border around the table */
+}
+th, td {
+    padding: 8px 12px;
+    border: 1px solid black; /* Adds border between table cells */
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2; /* Optional: Adds background color to the header */
+}
+
+
+.filter-box {
+    background-color: #F9F9F9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    width: 250px;
+}
+h2 {
+    font-size: 22px;
+    color: orange;
+}
+
+p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #555;
+}
+img {
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 570px;
+    height: auto;
+    object-fit: cover;
+} 
+
+#prev-btn:hover, #next-btn:hover , .pure-button-primary:hover, .pure-button-error:hover {
+    background-color: #e69b65;
+    border-radius: 5px;
+}

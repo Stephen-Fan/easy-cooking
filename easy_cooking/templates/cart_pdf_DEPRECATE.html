@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}CheckList PDF - Easy Cooking{% endblock %}
+
+{% block content %}
+
+    <style>
+        /* 定义PDF的样式 */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        h3 {
+            font-size: 18px;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+        h4 {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        ul li {
+            padding: 5px 0;
+        }
+        .cart-items {
+            border-top: 1px solid #ddd;
+            margin-top: 20px;
+        }
+        .cart-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+
+    <h1>My CheckList</h1>
+    <div class="cart-items">
+        {% if cart_data %}
+            <ul>
+                {% for item in cart_data %}
+                    <li class="cart-item">
+                        <h3>{{ item.recipe_name }}</h3>
+                        
+                        <!-- 未勾选的成分 -->
+                        <h4>Unchecked ingredients:</h4>
+                        <ul>
+                            {% for ingredient in item.non_selected_ingredients %}
+                                <li>{{ ingredient }}</li>
+                            {% endfor %}
+                        </ul>
+
+                        <!-- 已勾选的成分 -->
+                        <h4>Checked ingredients:</h4>
+                        <ul>
+                            {% for ingredient in item.selected_ingredients %}
+                                <li>{{ ingredient }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Your CheckList is empty.</p>
+        {% endif %}
+    </div>
+{% endblock %}
+
+

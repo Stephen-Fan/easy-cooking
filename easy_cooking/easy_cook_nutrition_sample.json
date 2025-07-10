@@ -1,0 +1,75 @@
+{
+    "calories": {
+        "quantity": 2056.2652644989084,
+        "unit": "kcal",
+        "percentage": 102.81326322494542
+    },
+    "total_fat": {
+        "quantity": 167.63697476999036,
+        "unit": "g",
+        "percentage": 257.9030381076775
+    },
+    "saturated_fat": {
+        "quantity": 35.56120640499857,
+        "unit": "g",
+        "percentage": 177.80603202499285
+    },
+    "trans_fat": {
+        "quantity": 0.6206,
+        "unit": "g",
+        "percentage": null
+    },
+    "cholesterol": {
+        "quantity": 588.0,
+        "unit": "mg",
+        "percentage": 196.0
+    },
+    "sodium": {
+        "quantity": 3130.283289999963,
+        "unit": "mg",
+        "percentage": 130.42847041666514
+    },
+    "total_carbohydrates": {
+        "quantity": 29.639087999767145,
+        "unit": "g",
+        "percentage": 9.879695999922381
+    },
+    "dietary_fiber": {
+        "quantity": 7.446254349981271,
+        "unit": "g",
+        "percentage": 29.785017399925085
+    },
+    "total_sugar": {
+        "quantity": 4.197729279998556,
+        "unit": "g",
+        "percentage": null
+    },
+    "protein": {
+        "quantity": 109.33760079997036,
+        "unit": "g",
+        "percentage": 218.67520159994075
+    },
+    "vitamin_d": {
+        "quantity": 0.6000000000000001,
+        "unit": "\u00b5g",
+        "percentage": 4.000000000000001
+    },
+    "calcium": {
+        "quantity": 150.40554849940233,
+        "unit": "mg",
+        "percentage": 15.040554849940232
+    },
+    "iron": {
+        "quantity": 8.434232044976968,
+        "unit": "mg",
+        "percentage": 46.85684469431649
+    },
+    "Potassium": {
+        "quantity": 1806.6960349987771,
+        "unit": "mg",
+        "percentage": 38.44034117018675
+    },
+    "nut_free": false,
+    "dairy_free": true,
+    "Vegetarian": false
+}
